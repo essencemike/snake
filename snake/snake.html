@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>贪吃蛇</title>
+<style type="text/css">
+body{
+	margin:0;
+	padding:0;
+}
+body{
+	text-align:center;
+}
+#snake{
+	margin:80px auto;
+	border:1px solid #ddd;
+	outline:none;
+	border-radius:4px;
+	box-shadow:2px 2px 10px 2px rgba(0,0,0,.5);
+	float:left;
+}
+p{
+	float:left;
+	margin-left:30px;
+}
+</style>
+</head>
+
+<body>
+	<canvas id="snake" width="800" height="600">
+    	你的浏览器不支持canvas，请升级你的浏览器。
+    </canvas>
+    <p>
+    	级别：<span id="rank">0</span><br/><br/>
+        分数：<span id="score">0</span>
+    </p>
+    <script type="text/javascript" src="jquery-1.10.1.min.js"></script>
+	<script type="text/javascript" src="snake.js"></script>
+    <script type="text/javascript">
+/*
+	css的书写顺序
+	1、位置属性，浮动，块级，层级（position,top,right,z-index,display,float等属性）
+	2、大小，内外边距（width,height,padding,margin）
+	3、文字系列（font line-height,letter-spacing color text-align text-decoration）
+	4、背景，边框(background border)
+	5、其他当然就是动画（animation,transition）
+*/
+	//获取级别对象
+	var rank = document.getElementById('rank');
+	
+	//获取分数对象
+	var score = document.getElementById('score');
+	
+	//设置分数
+	var scoreValue = 0;
+	
+	//获取画布
+	var ctx = document.getElementById('snake');
+	
+	var context = ctx.getContext('2d');
+	
+	var snake = new Snake(context);
+	
+	snake.init();
+	
+	//吃东西
+	snake.onEaten = function(){
+		
+		scoreValue += 10;
+		
+		score.innerHTML = scoreValue;
+		
+		rank.innerHTML = parseInt(scoreValue / 50);
+		
+		if(scoreValue % 50 == 0){
+			
+			snake.speed -= parseInt(scoreValue / 50) * 5;
+
+			if(snake.speed == 0){
+				snake.speed = 10;
+			}
+		}
+	};
+	
+	//死亡
+	snake.onDie = function(){
+		alert('你死了，重新开始游戏吧！');
+	};
+	
+	snake.start();
+
+</script>
+</body>
+</html>
